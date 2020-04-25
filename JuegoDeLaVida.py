@@ -31,13 +31,13 @@ NUMBER_RETURN_ALIVE = 2
 
 # Estado de la celdas
 gameState = np.zeros((NUMBER_COLUMNS, NUMBER_ROWS))
+newGameState = np.copy(gameState)
 
 # Pantalla
 screen = pg.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
 
 # Bucle de ejecución
 while True:
-    newGameState = np.copy(gameState)
     screen.fill(BACKGROUND_COLOR)
 
     # Eventos
@@ -46,11 +46,10 @@ while True:
         if (event.type == pg.KEYDOWN):
             isPaused = not isPaused
 
-    mousePressed = pg.mouse.get_pressed()
-    if sum(mousePressed) > 0:
-        posX, posY = pg.mouse.get_pos()
-        cellX, cellY = int(np.floor(posX / WIDTH_CELL)), int(np.floor(posY / HEIGHT_CELL))
-        newGameState[cellX, cellY] = not newGameState[cellX, cellY]
+        if (event.type == pg.MOUSEBUTTONDOWN):
+            posX, posY = pg.mouse.get_pos()
+            cellX, cellY = int(np.floor(posX / WIDTH_CELL)), int(np.floor(posY / HEIGHT_CELL))
+            newGameState[cellX, cellY] = not newGameState[cellX, cellY]
 
     for y in range(0, NUMBER_ROWS):
         for x in range(0, NUMBER_COLUMNS):
@@ -66,10 +65,12 @@ while True:
 
                 currentState = gameState[x, y]
                 # Rules
-                if currentState == DEAD and numberNeighbours == NUMBER_RETURN_ALIVE:
-                    newGameState[x, y] = ALIVE
-                elif currentState == ALIVE and (numberNeighbours < NUMBER_MIN_KEEP_ALIVE or numberNeighbours > NUMBER_MAX_KEEP_ALIVE):
-                    newGameState[x, y] = DEAD
+                if currentState == DEAD:
+                    if numberNeighbours == NUMBER_RETURN_ALIVE:
+                        newGameState[x, y] = ALIVE
+                else:
+                    if numberNeighbours < NUMBER_MIN_KEEP_ALIVE or numberNeighbours > NUMBER_MAX_KEEP_ALIVE:
+                        newGameState[x, y] = DEAD
 
             #poly = [
             #    ((x)     * widthCell, (y)     * heightCell),
