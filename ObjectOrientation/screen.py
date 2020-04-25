@@ -1,12 +1,12 @@
-import pygame as pg
-
 class Constants:
     SCREEN_WIDTH, SCREEN_HEIGHT = 1000, 1000
     BACKGROUND_COLOR = 0, 0, 0
 
+import pygame as pg
+
 class Screen:
     def __init__(self):
-        self.screen = pg.display.set_mode((Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH))
+        self.screen = pg.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
 
     def empty(self):
         self.screen.fill(Constants.BACKGROUND_COLOR)

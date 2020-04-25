@@ -1,8 +1,13 @@
 import numpy as np
 
 class Constants:
+    from screen import Constants as s
     ALIVE, DEAD = 1, 0
-    NUMBER_COLUMNS, NUMBER_ROWS = 50, 50
+    RATIO = 20
+    NUMBER_COLUMNS, NUMBER_ROWS = int(np.floor(s.SCREEN_WIDTH / RATIO)), int(np.floor(s.SCREEN_HEIGHT / RATIO))
+
+from cell import Cell
+from rules import Rules
 
 class GameState:
     def __init__(self):
@@ -30,18 +35,18 @@ class GameState:
         else:
             self.newState[x, y] = Constants.DEAD
 
-    def draw(self, screen, x, y):
-        from cell import Cell
+    def draw(self, screen):
+        for y in range(0, Constants.NUMBER_ROWS):
+            for x in range(0, Constants.NUMBER_COLUMNS):
+                isDead = self.is_dead(x, y)
 
-        isDead = self.is_dead(x, y)
+                cell = Cell(x, y, isDead)
+                cell.draw(screen)
 
-        cell = Cell(x, y, isDead)
-        cell.draw(screen)
+        self.swapp()
 
     def change_state_bypos(self, posX, posY):
-        from cell import Constants as c
-
-        x, y = int(np.floor(posX / c.WIDTH_CELL)), int(np.floor(posY / c.HEIGHT_CELL))
+        x, y = Cell.get_location(posX, posY)
         self.change_state(x, y)
     
     def change_state(self, x, y):
@@ -49,3 +54,16 @@ class GameState:
 
     def swapp(self):
         self.currentState = np.copy(self.newState)
+    
+    def action(self):
+        for y in range(0, Constants.NUMBER_ROWS):
+            for x in range(0, Constants.NUMBER_COLUMNS):
+                numberNeighbours = self.get_number_neighbours(x, y)
+
+                # Reglas
+                if self.is_dead(x, y):
+                    if Rules.born(numberNeighbours):
+                        self.update_state(x, y, True)
+                else:
+                    if Rules.kill(numberNeighbours):
+                        self.update_state(x, y, False)

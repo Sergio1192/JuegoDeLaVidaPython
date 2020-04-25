@@ -1,10 +1,8 @@
 # Imports
 import time as t
 
-from rules import Rules
 from screen import Screen
 from game_state import GameState
-from game_state import Constants as GameStateContants
 
 # Variables
 SLEEP_TIME = 0.1
@@ -18,8 +16,6 @@ screen = Screen()
 
 # Bucle de ejecución
 while True:
-    screen.empty()
-
     # Eventos
     isKeyPressed, isMousePressed = screen.is_pressed()
     if isKeyPressed:
@@ -29,25 +25,13 @@ while True:
         posX, posY = screen.get_mouse_position()
         gameState.change_state_bypos(posX, posY)
 
-    # Bucle
-    for y in range(0, GameStateContants.NUMBER_ROWS):
-        for x in range(0, GameStateContants.NUMBER_COLUMNS):
-            if not isPaused:
-                numberNeighbours = gameState.get_number_neighbours(x, y)
+    # Acciones que modifican el estado del juego
+    if not isPaused:
+        gameState.action()
 
-                # Reglas
-                if gameState.is_dead(x, y):
-                    if Rules.born(numberNeighbours):
-                        gameState.update_state(x, y, True)
-                else:
-                    if Rules.kill(numberNeighbours):
-                        gameState.update_state(x, y, False)
-
-            # Dibujado
-            gameState.draw(screen.screen, x, y)
-
-    gameState.swapp()
-
+    # Dibujado
+    screen.empty()
+    gameState.draw(screen.screen)
     screen.show()
 
     t.sleep(SLEEP_TIME)
