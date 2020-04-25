@@ -13,3 +13,19 @@ class Screen:
 
     def show(self):
         pg.display.flip()
+
+    def get_mouse_position(self):
+        return pg.mouse.get_pos()
+    
+    def is_pressed(self):
+        isKeyPressed = False
+        isMousePressed = False
+
+        events = pg.event.get()
+        for event in events:
+            if (event.type == pg.KEYDOWN):
+                isKeyPressed = True
+            if (event.type == pg.MOUSEBUTTONDOWN):
+                isMousePressed = True
+    
+        return (isKeyPressed, isMousePressed)
