@@ -34,7 +34,7 @@ gameState = np.zeros((NUMBER_COLUMNS, NUMBER_ROWS))
 newGameState = np.copy(gameState)
 
 # Pantalla
-screen = pg.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
+screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Bucle de ejecución
 while True:
