@@ -1,7 +1,7 @@
 class Constants:
     NUMBER_MIN_KEEP_ALIVE = 2
     NUMBER_MAX_KEEP_ALIVE = 3
-    NUMBER_RETURN_ALIVE = 2
+    NUMBER_RETURN_ALIVE = 3
 
 class Rules:
     @staticmethod

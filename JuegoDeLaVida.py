@@ -27,7 +27,7 @@ isPaused = True
 # Rules
 NUMBER_MIN_KEEP_ALIVE = 2
 NUMBER_MAX_KEEP_ALIVE = 3
-NUMBER_RETURN_ALIVE = 2
+NUMBER_RETURN_ALIVE = 3
 
 # Estado de la celdas
 gameState = np.zeros((NUMBER_COLUMNS, NUMBER_ROWS))
